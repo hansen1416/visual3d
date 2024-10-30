@@ -1,5 +1,14 @@
 import * as THREE from 'three';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+// When using the Tauri API npm package:
+import { invoke } from '@tauri-apps/api/core';
+
+// Invoke the command
+invoke('start_command', { my_arg: 'my arguments' });
+
+invoke('greet', { name: 'Hansen' }).then((response) => {
+  console.log(response);
+});
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
