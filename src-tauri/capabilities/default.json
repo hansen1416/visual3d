@@ -11,11 +11,19 @@
     "fs:default",
     {
       "identifier": "fs:scope",
-      "allow": [{ "path": "$DOCUMENT/*" }]
+      "allow": [
+        {
+          "path": "$DOCUMENT/*"
+        }
+      ]
     },
     {
       "identifier": "fs:allow-exists",
-      "allow": [{ "path": "$DOCUMENT/*" }]
+      "allow": [
+        {
+          "path": "$DOCUMENT/*"
+        }
+      ]
     }
   ]
 }
