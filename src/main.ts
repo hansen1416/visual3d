@@ -1,10 +1,20 @@
 import * as THREE from 'three';
+/** @ts-ignore */
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 // When using the Tauri API npm package:
 import { invoke } from '@tauri-apps/api/core';
 
+import { BaseDirectory, exists, create } from '@tauri-apps/plugin-fs';
+
+
+const is_file_exists = await exists('wham_output.pkl', {
+  baseDir: BaseDirectory.Document,
+});
+
+console.log(is_file_exists);
+
 // Invoke the command
-invoke('start_command', { my_arg: 'my arguments' });
+invoke('start_command');
 
 invoke('greet', { name: 'Hansen' }).then((response) => {
   console.log(response);

@@ -1,9 +1,9 @@
 #[tauri::command]
-pub fn greet(name: &str) -> String {
-    format!("Hello, {}! You've been greeted from Rust!", name).into()
+pub fn start_command() {
+    println!("Command starts!!!, command");
 }
 
 #[tauri::command(rename_all = "snake_case")]
-pub fn start_command(my_arg: String) {
-    println!("Command starts!!!, command: {}", my_arg);
+pub fn greet(name: &str) -> String {
+    format!("Hello, {}! You've been greeted from Rust!", name).into()
 }
