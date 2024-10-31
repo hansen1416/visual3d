@@ -1,6 +1,6 @@
 import { BaseDirectory, exists, readFile } from '@tauri-apps/plugin-fs';
 
-async function vertices_loader(filename: string): Promise<Array<Array<Array<number>>>> {
+async function vertices_loader(filename: string): Promise<Array<Array<number>>> {
 
     const is_file_exists = await exists(filename, {
         baseDir: BaseDirectory.Document,
@@ -27,24 +27,21 @@ async function vertices_loader(filename: string): Promise<Array<Array<Array<numb
         float64Values.push(value);
     }
 
-    // float64Values is 1d array, reshape it to 3d array, (469, 6890, 3)
-    const shape = [469, 6890, 3];
+    // float64Values is 1d array, reshape it to 2d array, (N, 6890 * 3)
+    const shape = [~~(float64Values.length / (6890 * 3)), 6890 * 3];
     const reshapedArray = new Array(shape[0]); // Create the first dimension
 
     for (let i = 0; i < shape[0]; i++) {
         reshapedArray[i] = new Array(shape[1]); // Create the second dimension
         for (let j = 0; j < shape[1]; j++) {
-            reshapedArray[i][j] = new Array(shape[2]); // Create the third dimension
-            for (let k = 0; k < shape[2]; k++) {
-                reshapedArray[i][j][k] = float64Values[i * shape[1] * shape[2] + j * shape[2] + k];
-            }
+            reshapedArray[i][j] = float64Values[i * shape[1] + j];
         }
     }
 
     return reshapedArray;
 }
 
-async function faces_loader(filename: string): Promise<Array<Array<number>>> {
+async function faces_loader(filename: string): Promise<Array<number>> {
     const is_file_exists = await exists(filename, {
         baseDir: BaseDirectory.Document,
     });
@@ -71,19 +68,21 @@ async function faces_loader(filename: string): Promise<Array<Array<number>>> {
         int32values.push(value);
     }
 
-    // reahpe the array to 2d array, (N,3)
-    const shape = [int32values.length / 3, 3];
+    return int32values;
 
-    const reshapedArray = new Array(shape[0]); // Create the first dimension
+    // // reahpe the array to 2d array, (N,3)
+    // const shape = [int32values.length / 3, 3];
 
-    for (let i = 0; i < shape[0]; i++) {
-        reshapedArray[i] = new Array(shape[1]); // Create the second dimension
-        for (let j = 0; j < shape[1]; j++) {
-            reshapedArray[i][j] = int32values[i * shape[1] + j];
-        }
-    }
+    // const reshapedArray = new Array(shape[0]); // Create the first dimension
 
-    return reshapedArray;
+    // for (let i = 0; i < shape[0]; i++) {
+    //     reshapedArray[i] = new Array(shape[1]); // Create the second dimension
+    //     for (let j = 0; j < shape[1]; j++) {
+    //         reshapedArray[i][j] = int32values[i * shape[1] + j];
+    //     }
+    // }
+
+    // return reshapedArray;
 }
 
 export { vertices_loader, faces_loader };
