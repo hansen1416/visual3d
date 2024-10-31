@@ -3,27 +3,13 @@ import * as THREE from 'three';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 // When using the Tauri API npm package:
 import { invoke } from '@tauri-apps/api/core';
-
-import { BaseDirectory, exists, readFile } from '@tauri-apps/plugin-fs';
-
-
-const is_file_exists = await exists('wham_output.pkl', {
-  baseDir: BaseDirectory.Document,
-});
-
-if (is_file_exists) {
-  const data = await readFile('wham_output.pkl', {
-    baseDir: BaseDirectory.Document,
-  });
-
-  console.log(data);
-}
+import { vertices_loader } from './components/mesh_loader';
 
 
 // Invoke the command
 invoke('start_command');
 
-// invoke('greet', { name: 'Hansen' }).then((response) => {
+// invoke('greet', { filename: 'wham_output.pkl' }).then((response) => {
 //   console.log(response);
 // });
 
@@ -45,6 +31,10 @@ const cube = new THREE.Mesh(geometry, material);
 scene.add(cube);
 
 camera.position.z = 5;
+
+const vertices = await vertices_loader('all_vertices.bin');
+
+console.log(vertices)
 
 function animate() {
   requestAnimationFrame(animate);
