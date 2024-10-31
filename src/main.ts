@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 // When using the Tauri API npm package:
 import { invoke } from '@tauri-apps/api/core';
-import { vertices_loader } from './components/mesh_loader';
+import { vertices_loader, faces_loader } from './components/mesh_loader';
 
 
 // Invoke the command
@@ -33,8 +33,10 @@ scene.add(cube);
 camera.position.z = 5;
 
 const vertices = await vertices_loader('all_vertices.bin');
+const faces = await faces_loader('faces.bin');
 
-console.log(vertices)
+console.log(vertices);
+console.log(faces);
 
 function animate() {
   requestAnimationFrame(animate);
