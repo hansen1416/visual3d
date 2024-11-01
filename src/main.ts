@@ -16,7 +16,7 @@ invoke('start_command');
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
-camera.position.z = 6;
+camera.position.z = 8;
 
 const canvas: HTMLCanvasElement = document.getElementById('three_scene') as HTMLCanvasElement;
 
@@ -27,9 +27,12 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 
 const controls = new OrbitControls(camera, renderer.domElement);
 
+// add light to the scene
+const light = new THREE.AmbientLight(0xffffff); // soft white light
+light.position.set(0, 1, 1).normalize();
+
 const vertices = await vertices_loader('all_vertices.bin');
 const faces = await faces_loader('faces.bin');
-
 
 const geometry = new THREE.BufferGeometry();
 
@@ -42,7 +45,7 @@ const indices = faces;
 geometry.setIndex(indices);
 geometry.setAttribute('position', new THREE.BufferAttribute(vertices0, 3));
 
-const material = new THREE.MeshBasicMaterial({ color: 0xffffff });
+const material = new THREE.MeshBasicMaterial({ color: 0xcccccc });
 const smpl_mesh = new THREE.Mesh(geometry, material);
 
 scene.add(smpl_mesh);

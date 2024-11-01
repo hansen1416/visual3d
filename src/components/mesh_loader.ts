@@ -38,6 +38,23 @@ async function vertices_loader(filename: string): Promise<Array<Array<number>>> 
         }
     }
 
+    // Normalize the z values
+    for (let i = 0; i < reshapedArray.length; i++) {
+        const min_z = Math.min(...reshapedArray[i].slice(2, 6890 * 3, 3));
+
+        for (let j = 2; j < 6890 * 3; j += 3) {
+            reshapedArray[i][j] -= min_z;
+        }
+    }
+
+
+    // flip the y values
+    for (let i = 0; i < reshapedArray.length; i++) {
+        for (let j = 1; j < 6890 * 3; j += 3) {
+            reshapedArray[i][j] = -reshapedArray[i][j];
+        }
+    }
+
     return reshapedArray;
 }
 
